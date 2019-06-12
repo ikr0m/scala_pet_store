@@ -40,4 +40,41 @@ libraryDependencies ++= Seq(
   "org.http4s" %% "http4s-blaze-client" % Http4sVersion % Test, 
   "org.scalacheck" %% "scalacheck" % ScalaCheckVersion % Test,
   "org.scalatest" %% "scalatest" % ScalaTestVersion % Test,
+  
+  // Authentication dependencies
+  "io.github.jmcardon" %% "tsec-common"
+  "io.github.jmcardon" %% "tsec-password"
+  "io.github.jmcardon" %% "tsec-mac"
+  "io.github.jmcardon" %% "tsec-signatures"
+  "io.github.jmcardon" %% "tsec-jwt-mac"
+  "io.github.jmcardon" %% "tsec-jwt-sig"
+  "io.github.jmcardon" %% "tsec-http4s"
 )
+
+def scalacOptionsForVersion(version: String): Seq[String] = {
+  // format: off
+  val defaultOpts = Seq(
+    "-deprecation", // Emit warning and location for usages of deprecated APIs
+    "-encoding", "utf-8" // Specify character encoding used by source files
+    "-explaintypes", // Explain type errors in more details
+    "-feature", // Emit warning and location for usages of features that should be imported explicitly
+    "language:existentials" // Existential types (besides wildcard types) can be written and inferred
+    "-language:experimental.macros", // Allow macro definition (besides implementation and application)
+    "-language:higherKinds", // Allow higher-kinded types
+    "-language:implicitConversions", // Allow definition of implicit functions called views
+    "-unchecked", // Enable additional warnings where generated code depends on assumptions
+  )
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
