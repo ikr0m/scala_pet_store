@@ -31,7 +31,7 @@ libraryDependencies ++= Seq(
   "org.tpolecat" %% "doobie-scalatest" % DoobieVersion,
   "org.tpolecat" %% "doobie-hikari" % DoobieVersion,
   "com.beachape" %% "enumeratum-circe" % EnumeratumCirceVersion,
-  "com.h2database" %% "h2" % H2Version,
+  "com.h2database" % "h2" % H2Version,
   "org.http4s" %% "http4s-blaze-server" % Http4sVersion,
   "org.http4s" %% "http4s-circe" % Http4sVersion,
   "org.http4s" %% "http4s-dsl" % Http4sVersion,
@@ -42,13 +42,13 @@ libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % ScalaTestVersion % Test,
   
   // Authentication dependencies
-  "io.github.jmcardon" %% "tsec-common"
-  "io.github.jmcardon" %% "tsec-password"
-  "io.github.jmcardon" %% "tsec-mac"
-  "io.github.jmcardon" %% "tsec-signatures"
-  "io.github.jmcardon" %% "tsec-jwt-mac"
-  "io.github.jmcardon" %% "tsec-jwt-sig"
-  "io.github.jmcardon" %% "tsec-http4s"
+  "io.github.jmcardon" %% "tsec-common" % TsecVersion,
+  "io.github.jmcardon" %% "tsec-password" % TsecVersion,
+  "io.github.jmcardon" %% "tsec-mac" % TsecVersion,
+  "io.github.jmcardon" %% "tsec-signatures" % TsecVersion,
+  "io.github.jmcardon" %% "tsec-jwt-mac" % TsecVersion,
+  "io.github.jmcardon" %% "tsec-jwt-sig" % TsecVersion,
+  "io.github.jmcardon" %% "tsec-http4s" % TsecVersion
 )
 
 def scalacOptionsForVersion(version: String): Seq[String] = {
@@ -56,9 +56,9 @@ def scalacOptionsForVersion(version: String): Seq[String] = {
   val defaultOpts = Seq(
     "-deprecation", // Emit warning and location for usages of deprecated APIs
     "-encoding", "utf-8" // Specify character encoding used by source files
-    "-explaintypes", // Explain type errors in more details
+    "-explaintypes", // Explain type errors in more detail
     "-feature", // Emit warning and location for usages of features that should be imported explicitly
-    "language:existentials" // Existential types (besides wildcard types) can be written and inferred
+    "-language:existentials" // Existential types (besides wildcard types) can be written and inferred
     "-language:experimental.macros", // Allow macro definition (besides implementation and application)
     "-language:higherKinds", // Allow higher-kinded types
     "-language:implicitConversions", // Allow definition of implicit functions called views
@@ -76,9 +76,9 @@ def scalacOptionsForVersion(version: String): Seq[String] = {
     "-Xlint:nullary-unit", // Warn when nullary methods return Unit
     "-Xlint:option-implicit" // Option.apply used implicit view
     "-Xlint:package-object-classes" // Class or object defined in package object
-    "-Xlint:poly-implicit-overloaded" // Parameterized overloaded implicit methods are not visible as view bounds
+    "-Xlint:poly-implicit-overload" // Parameterized overloaded implicit methods are not visible as view bounds
     "-Xlint:private-shadow" // A private field (or class parameter) shadows a superclass field
-    "-Xlint:stars-align", // A pattern sequence wildcard must align with sequence component
+    "-Xlint:stars-align", // Pattern sequence wildcard must align with sequence component
     "-Xlint:type-parameter-shadow", // A local type parameter shadows a type already in scope
     "-Ywarn-dead-code", // Warn when dead code is identified
     "-Ywarn-extra-implicit", // Warn when more than one implicit parameter section is defined
@@ -101,13 +101,38 @@ def scalacOptionsForVersion(version: String): Seq[String] = {
       "-Ypartial-unification", // Enable partial unification in type constructor inference
       "-Ywarn-inaccessible", // Warn about inaccessible types in method signatures
       "-Ywarn-infer-any", // Warn when a type argument is inferred to be 'Any'
-      "-Ywarn-nullary-override", // Warn when a non-nullary 'def f()' overrides nullary 'def f'
+      "-Ywarn-nullary-override", // Warn when non-nullary 'def f()' overrides nullary 'def f'
       "-Ywarn-nullary-unit", // Warn when nullary methods return Unit
     )
     case _ => Seq()
   }
-
+  defaultOpts ++ versionOpts
+  // format: on
 }
+
+scalacOptions ++= scalacOptionsForVersion(scalaVersion.value)
+
+addCompilerPlugin("org.spire-math" %% "kind-projector" % KindProjectorVersion cross CrossVersion.binary)
+
+// Filter out compiler flags to make the repl experience functional...
+val badConsoleFlags = Seq("-Xfatal-warnings", "-Ywarn-unused:imports")
+scalacOptions in (Compile, console) ~= (_.filterNot(badConsoleFlags.contains(_)))
+
+enablePlugins(ScalafmtPlugin, JavaAppPackaging, GhpagesPlugin, MicrositesPlugin, TutPlugin)
+
+// Microsite settings
+git.remoteRepo := "git@github.com:ikr0m/scala_pet_store.git"
+
+micrositeGithubOwner := "ikr0m"
+micrositeGithubRepo := "scala_pet_store"
+micrositeName := "Scala Pet Store"
+micrositeDescription := "An example application using FP techniques in Scala"
+micrositeBaseurl := "scala_pet_store"
+
+// Note: This fixes error with sbt run not loading config properly
+fork in run := true
+
+dockerExposedPorts ++= Seq(8080)
 
 
 
