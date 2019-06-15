@@ -65,7 +65,7 @@ def scalacOptionsForVersion(version: String): Seq[String] = {
     "-unchecked", // Enable additional warnings where generated code depends on assumptions
     "-Xcheckinit", // Wrap field accessors to throw an exception on uninitialized access
     "-Xfuture", // Turn on future language features
-    "-Xlint:adapter-args", // Warn if an argument list is modified to match the receiver
+    "-Xlint:adapted-args", // Warn if an argument list is modified to match the receiver
     "-Xlint:constant", // Evaluation of a constant arithmetic expression results in an error
     "-Xlint:delayedinit-select", // Selecting member of DelayedInit
     "-Xlint:doc-detached", // A Scaladoc comment appears to be detached from its element

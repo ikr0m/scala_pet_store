@@ -17,6 +17,6 @@ addSbtPlugin("com.47deg" % "sbt-microsites" % "0.7.18")
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-ghpages" % "0.6.3")
 
-resolvers += "Flyway".at("http://davidmweber.github.io/flyway-sbt.repo")
+resolvers += "Flyway".at("https://davidmweber.github.io/flyway-sbt.repo")
 
 resolvers += "jgit-repo" at "http://download.eclipse.org/jgit/maven"
