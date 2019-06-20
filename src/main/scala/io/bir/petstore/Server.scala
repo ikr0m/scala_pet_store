@@ -29,7 +29,7 @@ object Server extends IOApp {
       key             <- Resource.liftF(HMACSHA256.generateKey[F])
       authRepo        = DoobieAuthRepositoryInterpreter[F, HMACSHA256](key, xa)
       petRepo         = DoobiePetRepositoryInterpreter[F](xa)
-      orderRepo       = DoobiePetRepositoryInterpreter[F](xa)
+      orderRepo       = DoobieOrderRepositoryInterpreter[F](xa)
       userRepo        = DoobieUserRepositoryInterpreter[F](xa)
       petValidation   = PetValidationInterpreter[F](petRepo)
       petService      = PetService[F](petRepo, petValidation)
