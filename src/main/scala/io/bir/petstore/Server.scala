@@ -53,9 +53,3 @@ object Server extends IOApp {
 
   def run(args: List[String]): IO[ExitCode] = createServer.use(_ => IO.never).as(ExitCode.Success)
 }
-
-
-
-
-
-
